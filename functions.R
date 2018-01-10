@@ -114,22 +114,3 @@ install.all <-  function(pkgs, path, lookup){
   }
 }
 
-
-
-packagesExtra <- function(pkg.retained){
-  # create a list of all installed packages
-  ip <- as.data.frame(installed.packages())
-  head(ip)
-  # if you use MRO, make sure that no packages in this library will be removed
-  ip <- subset(ip, !grepl("ORE", ip$LibPath))
-  # we don't want to remove base or recommended packages either\
-  ip <- ip[!(ip[,"Priority"] %in% c("base", "recommended")),]
-  # determine the library where the packages are installed
-  path.lib <- unique(ip$LibPath)
-  # create a vector with all the names of the packages you want to remove
-  pkgs.to.remove <- ip[,1]
-  
-  nlp.pkgs <- c('slam', 'NLP', 'tm')
-  pkgs.to.remove <- pkgs.to.remove[!pkgs.to.remove %in% nlp.pkgs & !pkgs.to.remove %in% pkg.retained & !grepl('ORE*', pkgs.to.remove)]
-  as.character(pkgs.to.remove)
-}
